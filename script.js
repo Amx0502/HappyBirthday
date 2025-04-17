@@ -168,12 +168,8 @@ function switchGif() {
     currentGifIndex++;
     const cakeGif = document.getElementById('cake-gif');
     
-    // 创建新的Image对象来处理GIF加载
-    const newGif = new Image();
-    newGif.onload = function() {
-        cakeGif.src = this.src;
-    };
-    newGif.src = `img/cake${currentGifIndex}.gif`;
+    // 立即切换GIF
+    cakeGif.src = `img/cake${currentGifIndex}.gif`;
 
     // 如果是最后一个GIF，禁用进一步切换
     if (currentGifIndex >= 4) {
@@ -289,6 +285,9 @@ function initializeMainContent() {
     mainContent.classList.remove('hidden');
     initializeMessages();
     
+    // 启用GIF切换
+    gifChangeEnabled = true;
+    
     // 添加点击事件监听器
     document.addEventListener('click', (e) => {
         showNextMessage();
@@ -301,11 +300,6 @@ function initializeMainContent() {
     
     // 启动生日粒子效果
     generateBirthdayParticles();
-
-    // 启用GIF切换
-    setTimeout(() => {
-        gifChangeEnabled = true;
-    }, 1000); // 等待1秒后启用GIF切换
 }
 
 // 创建倒计时粒子
