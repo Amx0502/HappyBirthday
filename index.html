@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="particles-js"></div>
+    
+    <!-- 欢迎界面 -->
+    <div id="welcome-screen" class="welcome-screen">
+        <div class="ready-dialog">
+            <div class="dialog-text">Are you ready for a surprise?</div>
+            <div class="dialog-buttons">
+                <button id="readyBtn" class="ready-btn">Yes, I'm ready! ✨</button>
+            </div>
+        </div>
+        <div class="countdown-container hidden">
+            <div id="countdown" class="countdown">3</div>
+        </div>
+        <h1 class="welcome-text hidden">Hi Lia</h1>
+    </div>
+
+    <!-- 音乐控制按钮 -->
+    <div class="music-control">
+        <button id="musicToggle" class="music-btn">
+            <i class="fas fa-music"></i>
+        </button>
+    </div>
+
+    <!-- 主界面 -->
+    <div id="main-content" class="container hidden">
+        <div class="birthday-card">
+            <div class="cake">
+                <div class="cake-base">
+                    <div class="layer"></div>
+                    <div class="icing"></div>
+                    <div class="drip"></div>
+                    <div class="candle">
+                        <div class="flame"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-content">
+                <h1 class="title">Happy Birthday!</h1>
+                <div class="message-container">
+                    <div class="message">
+                    </div>
+                    <div class="click-hint">Click anywhere to continue...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="music/birthdaymusic.ogg" type="audio/ogg">
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
