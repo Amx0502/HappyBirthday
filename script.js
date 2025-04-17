@@ -176,6 +176,108 @@ function switchGif() {
     newGif.src = `img/cake${currentGifIndex}.gif`;
 }
 
+// 创建生日粒子
+function createBirthdayParticle(type) {
+    const particle = document.createElement('div');
+    particle.className = `birthday-particle ${type}`;
+    
+    // 随机颜色
+    const colors = {
+        balloon: ['#FF69B4', '#87CEEB', '#98FB98', '#DDA0DD', '#FFD700'],
+        confetti: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD'],
+        star: ['#FFD700', '#FFA07A', '#87CEEB', '#98FB98', '#DDA0DD'],
+        'cake-bit': ['#FF69B4', '#FFD700', '#FF6B6B', '#87CEEB', '#DDA0DD']
+    };
+    const color = colors[type][Math.floor(Math.random() * colors[type].length)];
+    
+    // 设置样式
+    particle.style.backgroundColor = color;
+    
+    // 随机位置
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    let x, y;
+    
+    switch(type) {
+        case 'balloon':
+            x = Math.random() * width;
+            y = height + 30;
+            break;
+        case 'confetti':
+            x = Math.random() * width;
+            y = -10;
+            break;
+        case 'star':
+            x = Math.random() * width;
+            y = Math.random() * height;
+            break;
+        case 'cake-bit':
+            const card = document.querySelector('.birthday-card');
+            const cardRect = card.getBoundingClientRect();
+            x = cardRect.left + Math.random() * cardRect.width;
+            y = cardRect.top + cardRect.height / 2;
+            break;
+    }
+    
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+    
+    // 随机大小
+    const baseSize = {
+        balloon: { min: 15, max: 25 },
+        confetti: { min: 5, max: 8 },
+        star: { min: 8, max: 12 },
+        'cake-bit': { min: 4, max: 6 }
+    };
+    const size = Math.random() * (baseSize[type].max - baseSize[type].min) + baseSize[type].min;
+    particle.style.width = `${size}px`;
+    particle.style.height = type === 'balloon' ? `${size * 1.25}px` : `${size}px`;
+    
+    // 添加到容器
+    const container = document.querySelector('.main-particles');
+    container.appendChild(particle);
+    
+    // 设置动画结束后移除元素
+    const durations = {
+        balloon: 8000,
+        confetti: 4000,
+        star: 2000,
+        'cake-bit': 3000
+    };
+    
+    setTimeout(() => {
+        particle.remove();
+    }, durations[type]);
+}
+
+// 生成生日粒子效果
+function generateBirthdayParticles() {
+    function createRandomParticles() {
+        // 创建气球
+        if (Math.random() < 0.1) {
+            createBirthdayParticle('balloon');
+        }
+        
+        // 创建彩带
+        if (Math.random() < 0.2) {
+            createBirthdayParticle('confetti');
+        }
+        
+        // 创建星星
+        if (Math.random() < 0.15) {
+            createBirthdayParticle('star');
+        }
+        
+        // 创建蛋糕碎片
+        if (Math.random() < 0.1) {
+            createBirthdayParticle('cake-bit');
+        }
+    }
+    
+    // 定期创建粒子
+    return setInterval(createRandomParticles, 100);
+}
+
 // 初始化主界面
 function initializeMainContent() {
     welcomeScreen.style.display = 'none';
@@ -192,10 +294,96 @@ function initializeMainContent() {
     createMultipleFireworks(); // 立即创建第一组烟花
     setInterval(createMultipleFireworks, 1000); // 每秒创建一组烟花
     
-    // 启用GIF切换
-    setTimeout(() => {
-        gifChangeEnabled = true;
-    }, 1000); // 等待1秒后启用GIF切换，确保欢迎界面完全结束
+    // 启动生日粒子效果
+    generateBirthdayParticles();
+}
+
+// 创建倒计时粒子
+function createCountdownParticle(x, y, isSpecial = false) {
+    const particle = document.createElement('div');
+    particle.className = `countdown-particle${isSpecial ? ' special' : ''}`;
+    
+    // 随机大小，特殊粒子更大
+    const size = isSpecial ? Math.random() * 8 + 6 : Math.random() * 4 + 2;
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    
+    // 初始位置
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+    
+    // 随机方向和速度
+    const angle = Math.random() * Math.PI * 2;
+    const velocity = isSpecial ? Math.random() * 3 + 2 : Math.random() * 2 + 1;
+    const vx = Math.cos(angle) * velocity;
+    const vy = Math.sin(angle) * velocity - (isSpecial ? 2 : 1); // 向上的额外速度
+    
+    // 添加到容器
+    const container = document.querySelector('.countdown-particles');
+    container.appendChild(particle);
+    
+    // 动画
+    let posX = x;
+    let posY = y;
+    let opacity = 1;
+    let life = isSpecial ? 1.5 : 1;
+    let scale = 1;
+    
+    function animate() {
+        if (life <= 0) {
+            particle.remove();
+            return;
+        }
+        
+        posX += vx;
+        posY += vy;
+        life -= 0.02;
+        opacity = life;
+        scale = isSpecial ? 1 + Math.sin(life * Math.PI) * 0.5 : 1;
+        
+        particle.style.left = `${posX}px`;
+        particle.style.top = `${posY}px`;
+        particle.style.opacity = opacity;
+        particle.style.transform = `scale(${scale})`;
+        
+        requestAnimationFrame(animate);
+    }
+    
+    animate();
+}
+
+// 生成倒计时粒子效果
+function generateCountdownParticles() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const centerX = width / 2;
+    const centerY = height / 2;
+    
+    function createParticles() {
+        // 创建普通粒子
+        for (let i = 0; i < 3; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * 100 + 50;
+            const x = centerX + Math.cos(angle) * distance;
+            const y = centerY + Math.sin(angle) * distance;
+            createCountdownParticle(x, y);
+        }
+        
+        // 创建特殊粒子
+        if (Math.random() < 0.3) {
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * 50 + 100;
+            const x = centerX + Math.cos(angle) * distance;
+            const y = centerY + Math.sin(angle) * distance;
+            createCountdownParticle(x, y, true);
+        }
+    }
+    
+    // 定期创建粒子
+    const intervalId = setInterval(createParticles, 50);
+    
+    // 返回清理函数
+    return () => clearInterval(intervalId);
 }
 
 // 开始倒计时
@@ -205,21 +393,46 @@ function startCountdown() {
     const welcomeText = document.querySelector('.welcome-text');
     let count = 3;
 
-    countdownContainer.classList.remove('hidden');
+    // 显示倒计时容器
+    countdownContainer.classList.add('visible');
+    
+    // 启动粒子效果
+    const cleanupParticles = generateCountdownParticles();
     
     const countdownInterval = setInterval(() => {
         count--;
         if (count > 0) {
-            countdownElement.textContent = count;
-        } else {
-            clearInterval(countdownInterval);
-            countdownContainer.classList.add('hidden');
-            welcomeText.classList.remove('hidden');
-            
-            // 显示欢迎文字2秒后切换到主界面
+            // 数字切换动画
+            countdownElement.classList.add('fade-out');
             setTimeout(() => {
-                initializeMainContent();
-            }, 2000);
+                countdownElement.textContent = count;
+                countdownElement.classList.remove('fade-out');
+            }, 300);
+        } else {
+            // 倒计时结束
+            clearInterval(countdownInterval);
+            countdownElement.classList.add('fade-out');
+            
+            // 停止粒子效果
+            cleanupParticles();
+            
+            setTimeout(() => {
+                countdownContainer.classList.remove('visible');
+                welcomeText.classList.remove('hidden');
+                
+                // 添加欢迎文字动画
+                setTimeout(() => {
+                    welcomeText.classList.add('show');
+                    
+                    // 2秒后切换到主界面
+                    setTimeout(() => {
+                        welcomeText.classList.remove('show');
+                        setTimeout(() => {
+                            initializeMainContent();
+                        }, 500);
+                    }, 2000);
+                }, 100);
+            }, 500);
         }
     }, 1000);
 }
@@ -264,12 +477,205 @@ function createHeart(x, y) {
     }, 1500);
 }
 
+// 创建粒子
+function createParticle(x, y) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    
+    // 随机大小
+    const size = Math.random() * 4 + 2;
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    
+    // 初始位置
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+    
+    // 随机方向和速度
+    const angle = Math.random() * Math.PI * 2;
+    const velocity = Math.random() * 2 + 1;
+    const vx = Math.cos(angle) * velocity;
+    const vy = Math.sin(angle) * velocity;
+    
+    // 添加到容器
+    const container = document.getElementById('particles-container');
+    container.appendChild(particle);
+    
+    // 动画
+    let posX = x;
+    let posY = y;
+    let opacity = 1;
+    let life = 1;
+    
+    function animate() {
+        if (life <= 0) {
+            particle.remove();
+            return;
+        }
+        
+        posX += vx;
+        posY += vy;
+        life -= 0.02;
+        opacity = life;
+        
+        particle.style.left = `${posX}px`;
+        particle.style.top = `${posY}px`;
+        particle.style.opacity = opacity;
+        
+        requestAnimationFrame(animate);
+    }
+    
+    animate();
+}
+
+// 生成粒子效果
+function generateParticles() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    // 每帧创建的粒子数
+    const particlesPerFrame = 2;
+    
+    function createParticles() {
+        for (let i = 0; i < particlesPerFrame; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            createParticle(x, y);
+        }
+    }
+    
+    // 定期创建粒子
+    const intervalId = setInterval(createParticles, 50);
+    
+    // 返回清理函数
+    return () => clearInterval(intervalId);
+}
+
+// 创建欢迎界面粒子
+function createWelcomeParticle(x, y, type = 'normal') {
+    const particle = document.createElement('div');
+    particle.className = `welcome-particle ${type}`;
+    
+    // 随机颜色
+    const colors = [
+        '#FF69B4', '#FFD700', '#FF6B6B', '#87CEEB', 
+        '#98FB98', '#DDA0DD', '#F0E68C', '#00CED1'
+    ];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    
+    // 随机大小
+    const size = type === 'glow' ? 
+        Math.random() * 6 + 4 : 
+        Math.random() * 4 + 2;
+    
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.backgroundColor = color;
+    particle.style.color = color; // 用于glow效果
+    
+    // 初始位置
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+    
+    // 添加到容器
+    const container = document.querySelector('.welcome-particles');
+    container.appendChild(particle);
+    
+    // 动画参数
+    const angle = Math.random() * Math.PI * 2;
+    const velocity = type === 'glow' ? 
+        Math.random() * 2 + 1 : 
+        Math.random() * 1.5 + 0.5;
+    const vx = Math.cos(angle) * velocity;
+    const vy = Math.sin(angle) * velocity;
+    const rotationSpeed = (Math.random() - 0.5) * 4;
+    
+    // 动画状态
+    let posX = x;
+    let posY = y;
+    let rotation = 0;
+    let opacity = 1;
+    let scale = 1;
+    let life = type === 'glow' ? 2 : 1.5;
+    
+    function animate() {
+        if (life <= 0) {
+            particle.remove();
+            return;
+        }
+        
+        posX += vx;
+        posY += vy;
+        rotation += rotationSpeed;
+        life -= 0.01;
+        opacity = life;
+        scale = 1 + Math.sin(life * Math.PI) * 0.2;
+        
+        particle.style.transform = `translate(${posX - x}px, ${posY - y}px) rotate(${rotation}deg) scale(${scale})`;
+        particle.style.opacity = opacity;
+        
+        // 创建轨迹粒子
+        if (type === 'glow' && Math.random() < 0.3) {
+            const trail = document.createElement('div');
+            trail.className = 'welcome-particle trail';
+            trail.style.width = `${size * 0.8}px`;
+            trail.style.height = `${size * 0.8}px`;
+            trail.style.backgroundColor = color;
+            trail.style.left = `${posX}px`;
+            trail.style.top = `${posY}px`;
+            container.appendChild(trail);
+            
+            // 轨迹粒子淡出
+            setTimeout(() => {
+                trail.style.opacity = '0';
+                trail.style.transform = 'scale(0.5)';
+                trail.style.transition = 'all 0.5s ease';
+                setTimeout(() => trail.remove(), 500);
+            }, 10);
+        }
+        
+        requestAnimationFrame(animate);
+    }
+    
+    animate();
+}
+
+// 生成欢迎界面粒子效果
+function generateWelcomeParticles() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    function createParticles() {
+        // 创建普通粒子
+        for (let i = 0; i < 2; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            createWelcomeParticle(x, y);
+        }
+        
+        // 创建发光粒子
+        if (Math.random() < 0.3) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            createWelcomeParticle(x, y, 'glow');
+        }
+    }
+    
+    // 定期创建粒子
+    const intervalId = setInterval(createParticles, 50);
+    
+    // 返回清理函数
+    return () => clearInterval(intervalId);
+}
+
 // 页面加载动画序列
 window.addEventListener('load', () => {
+    // 启动欢迎界面粒子效果
+    const cleanupWelcomeParticles = generateWelcomeParticles();
+    
     // 添加准备按钮点击事件
     const readyBtn = document.getElementById('readyBtn');
     const readyDialog = document.querySelector('.ready-dialog');
-    const countdownContainer = document.querySelector('.countdown-container');
     
     readyBtn.addEventListener('click', () => {
         // 按钮点击效果
@@ -278,13 +684,13 @@ window.addEventListener('load', () => {
             readyBtn.style.transform = 'scale(1)';
         }, 100);
         
+        // 停止欢迎界面粒子效果
+        cleanupWelcomeParticles();
+        
         // 淡出对话框
-        readyDialog.style.opacity = '0';
-        readyDialog.style.transform = 'scale(0.9)';
-        readyDialog.style.transition = 'all 0.5s ease';
+        readyDialog.classList.add('fade-out');
         
         setTimeout(() => {
-            // 隐藏对话框，显示倒计时
             readyDialog.style.display = 'none';
             startCountdown();
         }, 500);
