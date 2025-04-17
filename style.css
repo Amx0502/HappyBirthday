@@ -12,6 +12,8 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 #particles-js {
@@ -27,6 +29,10 @@ body {
     position: relative;
     z-index: 2;
     padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .birthday-card {
@@ -353,83 +359,107 @@ body {
 /* 响应式设计 */
 @media (max-width: 768px) {
     .birthday-card {
-        padding: 20px;
-        margin: 10px;
-        width: 90%;
+        padding: 60px 20px 30px 20px;
+        margin: 20px;
+        max-width: 90%;
     }
 
     .title {
         font-size: 2.5em;
-    }
-
-    .welcome-text {
-        font-size: 3.5em;
+        margin-bottom: 20px;
     }
 
     .message {
         font-size: 1em;
+        padding: 0 10px;
     }
 
     .message p {
         padding: 15px;
+        margin: 10px 0;
     }
 
     .cake {
         width: 80px;
         height: 80px;
-    }
-
-    .candle {
-        height: 30px;
-        top: -40px;
-    }
-
-    .flame {
-        height: 25px;
-        top: -20px;
+        margin-bottom: 20px;
     }
 
     .music-control {
-        top: 15px;
-        left: 15px;
+        bottom: 20px;
+        right: 20px;
     }
 
     .music-btn {
-        width: 35px;
-        height: 35px;
+        width: 40px;
+        height: 40px;
+        font-size: 1em;
+    }
+
+    .welcome-text {
+        font-size: 2.5em;
+    }
+
+    .dialog-text {
+        font-size: 1.2em;
+        padding: 0 20px;
+    }
+
+    .ready-btn {
+        padding: 12px 24px;
+        font-size: 1em;
     }
 }
 
 @media (max-width: 480px) {
     .birthday-card {
-        padding: 15px;
+        padding: 40px 15px 25px 15px;
+        margin: 15px;
     }
 
     .title {
         font-size: 2em;
-    }
-
-    .welcome-text {
-        font-size: 2.5em;
+        margin-bottom: 15px;
     }
 
     .message {
         font-size: 0.9em;
     }
 
+    .message p {
+        padding: 12px;
+        margin: 8px 0;
+    }
+
     .cake {
         width: 60px;
         height: 60px;
+        margin-bottom: 15px;
     }
 
-    .candle {
-        height: 25px;
-        top: -35px;
+    .music-control {
+        bottom: 15px;
+        right: 15px;
     }
 
-    .flame {
-        height: 20px;
-        top: -15px;
+    .music-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9em;
+    }
+
+    .welcome-text {
+        font-size: 2em;
+    }
+
+    .dialog-text {
+        font-size: 1em;
+        padding: 0 15px;
+    }
+
+    .ready-btn {
+        padding: 10px 20px;
+        font-size: 0.9em;
     }
 }
 
@@ -588,15 +618,17 @@ body {
 /* 触摸设备优化 */
 @media (hover: none) {
     .message-container::after {
-        display: none;
+        opacity: 1;
+        bottom: 5px;
     }
 
     .message p:hover {
         transform: none;
+        background: rgba(255, 255, 255, 0.1);
     }
 
     .music-control {
-        touch-action: manipulation;
+        opacity: 1;
     }
 }
 
@@ -835,25 +867,13 @@ body {
     }
 }
 
-/* 响应式设计增强 */
+/* 优化移动端动画性能 */
 @media (max-width: 768px) {
-    .dialog-text {
-        font-size: 2em;
+    .birthday-card {
+        animation: float 4s ease-in-out infinite;
     }
     
-    .ready-btn {
-        padding: 12px 25px;
-        font-size: 1.1em;
-    }
-}
-
-@media (max-width: 480px) {
-    .dialog-text {
-        font-size: 1.5em;
-    }
-    
-    .ready-btn {
-        padding: 10px 20px;
-        font-size: 1em;
+    .title {
+        animation: gradient 6s ease infinite;
     }
 } 
