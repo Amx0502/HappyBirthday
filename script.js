@@ -16,6 +16,10 @@ const messages = [
 let currentMessage = 0;
 let messageInterval;
 
+// GIF控制变量
+let currentGifIndex = 1;
+let gifChangeEnabled = false;
+
 // 自动播放音乐
 function playMusic() {
     bgMusic.volume = 0.5;
@@ -157,6 +161,21 @@ function createMultipleFireworks() {
     }
 }
 
+// 切换GIF图片
+function switchGif() {
+    if (!gifChangeEnabled || currentGifIndex >= 4) return;
+    
+    currentGifIndex++;
+    const cakeGif = document.getElementById('cake-gif');
+    
+    // 创建新的Image对象来处理GIF加载
+    const newGif = new Image();
+    newGif.onload = function() {
+        cakeGif.src = this.src;
+    };
+    newGif.src = `img/cake${currentGifIndex}.gif`;
+}
+
 // 初始化主界面
 function initializeMainContent() {
     welcomeScreen.style.display = 'none';
@@ -164,11 +183,19 @@ function initializeMainContent() {
     initializeMessages();
     
     // 添加点击事件监听器
-    document.addEventListener('click', showNextMessage);
+    document.addEventListener('click', (e) => {
+        showNextMessage();
+        switchGif();
+    });
 
     // 每秒创建多个烟花
     createMultipleFireworks(); // 立即创建第一组烟花
     setInterval(createMultipleFireworks, 1000); // 每秒创建一组烟花
+    
+    // 启用GIF切换
+    setTimeout(() => {
+        gifChangeEnabled = true;
+    }, 1000); // 等待1秒后启用GIF切换，确保欢迎界面完全结束
 }
 
 // 开始倒计时
