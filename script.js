@@ -174,6 +174,11 @@ function switchGif() {
         cakeGif.src = this.src;
     };
     newGif.src = `img/cake${currentGifIndex}.gif`;
+
+    // 如果是最后一个GIF，禁用进一步切换
+    if (currentGifIndex >= 4) {
+        gifChangeEnabled = false;
+    }
 }
 
 // 创建生日粒子
@@ -296,6 +301,11 @@ function initializeMainContent() {
     
     // 启动生日粒子效果
     generateBirthdayParticles();
+
+    // 启用GIF切换
+    setTimeout(() => {
+        gifChangeEnabled = true;
+    }, 1000); // 等待1秒后启用GIF切换
 }
 
 // 创建倒计时粒子
