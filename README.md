@@ -10,4 +10,5 @@
 
 ## 3、主界面（音乐是汪苏泷的像晴天像雨天）
 
-![image](https://github.com/user-attachments/assets/e26a1f7a-b63a-4c25-94cc-45d118f4aae2)
+https://github.com/user-attachments/assets/ec7fb1a9-4e1c-4222-b567-a7aa4e33fd1d
+
