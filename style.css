@@ -450,4 +450,141 @@ body {
     .click-hint {
         bottom: -20px;
     }
+}
+
+/* 爱心动画效果 */
+.heart {
+    position: fixed;
+    pointer-events: none;
+    width: 20px;
+    height: 20px;
+    background: #ff6b6b;
+    transform: rotate(45deg);
+    animation: floatHeart 1.5s ease-out forwards;
+    z-index: 1000;
+}
+
+.heart::before,
+.heart::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #ff6b6b;
+    border-radius: 50%;
+}
+
+.heart::before {
+    left: -10px;
+}
+
+.heart::after {
+    top: -10px;
+}
+
+@keyframes floatHeart {
+    0% {
+        transform: rotate(45deg) scale(0);
+        opacity: 1;
+    }
+    50% {
+        transform: rotate(45deg) scale(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: rotate(45deg) scale(1) translateY(-60px);
+        opacity: 0;
+    }
+}
+
+/* 小爱心效果 */
+.mini-heart {
+    position: fixed;
+    pointer-events: none;
+    width: 10px;
+    height: 10px;
+    background: #ff6b6b;
+    transform: rotate(45deg);
+    z-index: 1000;
+}
+
+.mini-heart::before,
+.mini-heart::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #ff6b6b;
+    border-radius: 50%;
+}
+
+.mini-heart::before {
+    left: -5px;
+}
+
+.mini-heart::after {
+    top: -5px;
+}
+
+@keyframes floatMiniHeart {
+    0% {
+        transform: rotate(45deg) scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(45deg) scale(1) translate(var(--tx), var(--ty));
+        opacity: 0;
+    }
+}
+
+/* 烟花效果 */
+.firework {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.firework-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+    0% {
+        transform: translateX(0) translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: 
+            translateX(calc(var(--x) * 1px))
+            translateY(calc(var(--y) * 1px))
+            scale(0);
+        opacity: 0;
+    }
+}
+
+/* 烟花尾迹效果 */
+.firework-trail {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+    animation: trail 0.5s ease-out forwards;
+}
+
+@keyframes trail {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
 } 
