@@ -284,7 +284,25 @@ body {
     font-size: 1em;
 }
 
-/* 欢迎界面样式 */
+/* 粒子效果容器 */
+.particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* 欢迎界面进场动画 */
 .welcome-screen {
     position: fixed;
     top: 0;
@@ -297,6 +315,8 @@ body {
     z-index: 1000;
     background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(5px);
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
 }
 
 .ready-dialog {
@@ -309,6 +329,29 @@ body {
     width: 85%;
     max-width: 350px;
     z-index: 1001;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    animation: slideUp 0.8s ease-out 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .countdown-container {
@@ -322,10 +365,14 @@ body {
     align-items: center;
     z-index: 1002;
     backdrop-filter: blur(5px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s;
 }
 
-.countdown-container.hidden {
-    display: none;
+.countdown-container.visible {
+    opacity: 1;
+    visibility: visible;
 }
 
 .countdown {
@@ -337,6 +384,14 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: countdownPulse 1s ease-in-out infinite, gradient 6s ease infinite;
+    transform: scale(1);
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
+}
+
+.countdown.fade-out {
+    transform: scale(1.5);
+    opacity: 0;
 }
 
 .welcome-text {
@@ -347,8 +402,15 @@ body {
     background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: welcomeIn 1s ease forwards, gradient 6s ease infinite;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.5s ease-in-out;
     z-index: 1003;
+}
+
+.welcome-text.show {
+    opacity: 1;
+    transform: scale(1);
 }
 
 .welcome-text.hidden {
@@ -620,6 +682,268 @@ body {
     }
     100% {
         transform: scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes countdownPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* 倒计时粒子效果 */
+.countdown-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1001;
+}
+
+.countdown-particle {
+    position: absolute;
+    background: linear-gradient(45deg, #ff6b6b, #ff9f9f, #ffd700, #ff69b4);
+    border-radius: 50%;
+    pointer-events: none;
+    mix-blend-mode: screen;
+}
+
+.countdown-particle.special {
+    background: radial-gradient(circle at center, #fff, #ffd700, #ff6b6b);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.countdown {
+    position: relative;
+    font-size: 8em;
+    color: white;
+    text-align: center;
+    background: linear-gradient(45deg, #ff6b6b, #ff9f9f, #ffd700, #ff69b4);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: countdownPulse 1s ease-in-out infinite, gradient 6s ease infinite;
+    transform: scale(1);
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.countdown::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    z-index: -1;
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
+/* 欢迎界面粒子效果 */
+.welcome-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.welcome-particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    mix-blend-mode: screen;
+}
+
+.welcome-particle.glow {
+    filter: blur(1px);
+    box-shadow: 0 0 8px currentColor;
+}
+
+.welcome-particle.trail {
+    filter: blur(2px);
+    opacity: 0.7;
+}
+
+.welcome-text {
+    position: relative;
+    font-size: 2.5em;
+    text-align: center;
+    background: linear-gradient(45deg, #ff6b6b, #ff9f9f, #ffd700, #ff69b4);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1003;
+}
+
+.welcome-text.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.welcome-text::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.welcome-text.show::after {
+    opacity: 1;
+}
+
+@keyframes particleFadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes particleFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* 主界面粒子效果 */
+.main-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.birthday-particle {
+    position: absolute;
+    pointer-events: none;
+}
+
+.birthday-particle.balloon {
+    width: 20px;
+    height: 25px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: floatBalloon 4s ease-in-out infinite;
+}
+
+.birthday-particle.balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    width: 2px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.6);
+    transform: translateX(-50%);
+}
+
+.birthday-particle.confetti {
+    width: 8px;
+    height: 8px;
+    animation: spinConfetti 4s linear infinite;
+}
+
+.birthday-particle.star {
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    animation: twinkleStar 2s ease-in-out infinite;
+}
+
+.birthday-particle.cake-bit {
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    animation: floatCakeBit 3s ease-in-out infinite;
+}
+
+@keyframes floatBalloon {
+    0%, 100% {
+        transform: translateY(0) rotate(2deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(-2deg);
+    }
+}
+
+@keyframes spinConfetti {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+    100% {
+        transform: rotate(360deg) translateY(100vh);
+    }
+}
+
+@keyframes twinkleStar {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+@keyframes floatCakeBit {
+    0% {
+        transform: translateY(0) rotate(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50px) rotate(360deg);
         opacity: 0;
     }
 } 
