@@ -2,13 +2,13 @@
 
 ## 1、在index.html中修改你需要祝福的朋友的姓名
 
-![image](https://github.com/user-attachments/assets/dd7ea918-2a0f-4c87-8c95-09671b11472c)
+![image](https://github.com/user-attachments/assets/f7ac47f0-9649-42d8-9cdd-fc348e20749a)
 
 ## 2、在const messages =[]中输入你想对朋友说的话
 
-![image](https://github.com/user-attachments/assets/cb33f109-bab2-4fd8-9209-03283cec4704)
+![image](https://github.com/user-attachments/assets/715b3183-4a44-4fdf-b680-01e5b896330f)
 
 ## 3、主界面（音乐是汪苏泷的像晴天像雨天）
 
-https://github.com/user-attachments/assets/ec7fb1a9-4e1c-4222-b567-a7aa4e33fd1d
+https://github.com/user-attachments/assets/5c5a1945-24f9-4375-89dd-a0748510af10
 
