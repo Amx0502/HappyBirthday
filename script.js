@@ -88,6 +88,75 @@ function initializeMessages() {
     currentMessage = 1;  // 设置为1，因为第一条消息已经显示
 }
 
+// 创建烟花效果
+function createFirework(x, y) {
+    const colors = ['#ff6b6b', '#ff9f9f', '#ffd700', '#ff69b4', '#87ceeb'];
+    const firework = document.createElement('div');
+    firework.className = 'firework';
+    firework.style.left = x + 'px';
+    firework.style.top = y + 'px';
+    document.body.appendChild(firework);
+
+    // 创建烟花粒子
+    const particleCount = 20; // 移动端使用较少的粒子数量
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'firework-particle';
+        
+        // 随机角度和距离
+        const angle = (Math.PI * 2 * i) / particleCount;
+        const velocity = 2 + Math.random() * 2;
+        const distance = 30 + Math.random() * 30; // 移动端使用较小的扩散范围
+        
+        // 设置粒子属性
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.setProperty('--x', Math.cos(angle) * distance * velocity);
+        particle.style.setProperty('--y', Math.sin(angle) * distance * velocity);
+        
+        firework.appendChild(particle);
+    }
+
+    // 创建上升轨迹效果
+    const trailCount = 5;
+    for (let i = 0; i < trailCount; i++) {
+        setTimeout(() => {
+            const trail = document.createElement('div');
+            trail.className = 'firework-trail';
+            trail.style.left = x + 'px';
+            trail.style.top = (y + i * 10) + 'px';
+            document.body.appendChild(trail);
+
+            setTimeout(() => trail.remove(), 500);
+        }, i * 50);
+    }
+
+    // 移除烟花元素
+    setTimeout(() => firework.remove(), 1000);
+}
+
+// 随机创建烟花
+function randomFirework() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    // 在屏幕上半部分随机位置创建烟花
+    const x = Math.random() * width;
+    const y = height * 0.2 + Math.random() * (height * 0.4);
+    
+    createFirework(x, y);
+}
+
+// 创建多个烟花
+function createMultipleFireworks() {
+    // 随机位置创建3-5个烟花
+    const count = Math.floor(Math.random() * 3) + 3;
+    for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+            randomFirework();
+        }, i * 200); // 每个烟花之间间隔200毫秒
+    }
+}
+
 // 初始化主界面
 function initializeMainContent() {
     welcomeScreen.style.display = 'none';
@@ -96,6 +165,10 @@ function initializeMainContent() {
     
     // 添加点击事件监听器
     document.addEventListener('click', showNextMessage);
+
+    // 每秒创建多个烟花
+    createMultipleFireworks(); // 立即创建第一组烟花
+    setInterval(createMultipleFireworks, 1000); // 每秒创建一组烟花
 }
 
 // 开始倒计时
@@ -124,6 +197,46 @@ function startCountdown() {
     }, 1000);
 }
 
+// 创建心形效果
+function createHeart(x, y) {
+    // 创建主爱心
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.style.left = x + 'px';
+    heart.style.top = y + 'px';
+    document.body.appendChild(heart);
+    
+    // 创建多个小爱心
+    for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+            const miniHeart = document.createElement('div');
+            miniHeart.className = 'mini-heart';
+            miniHeart.style.left = x + 'px';
+            miniHeart.style.top = y + 'px';
+            
+            // 随机方向和距离
+            const angle = (Math.random() * Math.PI * 2);
+            const distance = 30 + Math.random() * 40;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance - 20;
+            
+            miniHeart.style.setProperty('--tx', `${tx}px`);
+            miniHeart.style.setProperty('--ty', `${ty}px`);
+            miniHeart.style.animation = `floatMiniHeart 1s ease-out forwards ${i * 0.1}s`;
+            
+            document.body.appendChild(miniHeart);
+            
+            setTimeout(() => {
+                miniHeart.remove();
+            }, 1000 + i * 100);
+        }, i * 100);
+    }
+    
+    setTimeout(() => {
+        heart.remove();
+    }, 1500);
+}
+
 // 页面加载动画序列
 window.addEventListener('load', () => {
     // 添加准备按钮点击事件
@@ -148,5 +261,10 @@ window.addEventListener('load', () => {
             readyDialog.style.display = 'none';
             startCountdown();
         }, 500);
+    });
+
+    // 添加点击事件，显示爱心效果
+    document.addEventListener('click', (e) => {
+        createHeart(e.clientX, e.clientY);
     });
 }); 
