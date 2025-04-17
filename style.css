@@ -159,66 +159,101 @@ body {
     opacity: 1;
 }
 
+/* 蛋糕样式 */
 .cake {
-    width: 70px;
-    height: 70px;
+    width: 200px;
+    height: 200px;
     position: relative;
-    margin: 0 auto 20px;
-    z-index: 2;
+    margin: 0 auto 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.cake-base {
-    width: 100%;
+.cake-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
+/* 三层蛋糕 */
+.cake-layer-1 {
+    bottom: 0;
+    width: 200px;
+    height: 60px;
+    background: #FFE4E1;
+}
+
+.cake-layer-2 {
+    bottom: 60px;
+    width: 160px;
     height: 50px;
-    background: #ff9f9f;
-    border-radius: 8px;
+    background: #FFE4E1;
 }
 
-.layer {
+.cake-layer-3 {
+    bottom: 110px;
+    width: 120px;
+    height: 40px;
+    background: #FFE4E1;
+}
+
+/* 蛋糕装饰 */
+.cake-layer::after {
+    content: '';
     position: absolute;
     width: 100%;
     height: 15px;
-    background: #ff6b6b;
+    background: #FF6B6B;
     bottom: 0;
+    left: 0;
     border-radius: 8px;
 }
 
-.icing {
+/* 奶油装饰 */
+.cream {
     position: absolute;
-    width: 100%;
-    height: 12px;
-    background: white;
-    top: -8px;
-    border-radius: 8px;
+    width: 15px;
+    height: 15px;
+    background: #FF6B6B;
+    border-radius: 50%;
 }
 
+/* 蜡烛 */
 .candle {
-    width: 6px;
-    height: 25px;
-    background: #ffd700;
     position: absolute;
+    width: 8px;
+    height: 30px;
+    background: linear-gradient(45deg, #ff6b6b, #ff9f9f, #ffd700, #ff69b4, #87ceeb);
     top: -35px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
-.flame {
-    width: 12px;
-    height: 20px;
-    background: #ff6b6b;
+.candle::before {
+    content: '';
     position: absolute;
-    top: -20px;
+    width: 16px;
+    height: 16px;
+    background: #FFD700;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    top: -12px;
     left: 50%;
     transform: translateX(-50%);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
     animation: flicker 1s ease-in-out infinite;
-    box-shadow: 0 0 15px #ff6b6b;
+    box-shadow: 0 0 15px #FFD700;
 }
 
+/* 蜡烛动画 */
 @keyframes flicker {
-    0%, 100% { transform: translateX(-50%) scale(1); }
-    50% { transform: translateX(-50%) scale(1.1); }
+    0%, 100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(-50%) scale(1.2);
+        opacity: 0.8;
+    }
 }
 
 .music-control {
